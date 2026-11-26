@@ -1,22 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+struct Book {
+    int number;
+    char title[30];   /* slide: title[10] -> too small for "C Programming"(13+1) */
+};
 
 int main(void) {
-    char *pc = NULL;
-    int i = 0;
+    struct Book *p;
 
-    pc = (char*)malloc(100 * sizeof(char));   /* 100 bytes */
-    if (pc == NULL) {
+    p = (struct Book*)malloc(2 * sizeof(struct Book));   /* 2 Book structs */
+    if (p == NULL) {
         printf("Memory allocation error\n");
-        exit(1);
+        return 1;
     }
 
-    for (i = 0; i < 26; i++) {
-        pc[i] = 'a' + i;                      /* a ~ z */
-    }
-    pc[i] = 0;                                /* i == 26 : null terminator */
+    p->number = 1;
+    strcpy(p->title, "C Programming");
 
-    printf("%s\n", pc);
-    free(pc);
+    (p + 1)->number = 2;
+    strcpy((p + 1)->title, "Electronics");
+
+    printf("book 0 : %i, %s\n", p->number, p->title);
+    printf("book 1 : %i, %s\n", (p + 1)->number, (p + 1)->title);
+
+    free(p);
     return 0;
 }
